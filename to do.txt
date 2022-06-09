@@ -1,0 +1,22 @@
+Basic features:
+
+- Spawn a browser
+- Go to Twitch.tv
+- Search for our streamer ( We don't want to enter only via links as it is suspicious )
+- Enter the stream
+- Block video and audio ( for performance )
+
+
+Additional features:
+
+- Signing in via cookies
+- Proxy support
+- Chat support
+- Speech recognition
+- Follow
+- Enter the stream via follwed tab
+- Enter the stream via browse tab ( so it can look as if you found the channel by accident ) + only for bots not currently following.
+
+Bonus feature:
+
+???
