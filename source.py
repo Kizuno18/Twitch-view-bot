@@ -13,7 +13,9 @@ settings = {}
 settings["streamer"] = config["default"]["streamer"]
 
 def SpawnBot():
-    driver = uc.Chrome()
+    chrome_options = uc.ChromeOptions()
+    chrome_options.add_argument("--mute-audio")
+    driver = uc.Chrome(options=chrome_options)
     driver.get("https://www.twitch.tv/")
     search_box = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/nav/div/div[2]/div/div/div/div/div[1]/div/div/div/input")
 
@@ -28,9 +30,15 @@ def SpawnBot():
         if element.text == settings["streamer"]:
             element.click()
             break
+    
+    
+    time.sleep(3)
+
+    driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
+
 
     while True:
-        pass
+        time.sleep(10)
 
 if __name__ == "__main__":
     process = multiprocessing.Process(target=SpawnBot)
