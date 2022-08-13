@@ -8,4 +8,4 @@ if __name__ == "__main__":
 
     input("Press enter when you have logged in.")
     cookie_name = input("What is the name of the account? ")
-    pickle.dump(driver.get_cookies(),open(f"{cookie_name}.dump","wb"))
+    pickle.dump(driver.get_cookies(),open(f"cookies/{cookie_name}.dump","wb"))
