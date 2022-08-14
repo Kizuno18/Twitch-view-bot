@@ -13,7 +13,7 @@ Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEo
 - ✅ Block video and audio ( for performance ) [Episode 3](https://www.youtube.com/watch?v=ybNFTqF1QKY&t=13s)
 - ✅ Signing in via cookies [Episode 4](https://www.youtube.com/watch?v=OWTOw53Zdvc&t=2s)
 - ✅ Multiple bot spawning [Episode 5](https://www.youtube.com/watch?v=OvmgJPvA07A)
-- 🛑 Proxy support
+- ✅ Proxy support [Episode 6](https://youtu.be/3-BjLPMf0ak)
 - 🛑 Chat support
 - 🛑 Speech recognition ( So streamer can ask bots questions and they can respond like they are real people )
 - 🛑 Follow support 
