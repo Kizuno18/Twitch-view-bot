@@ -14,7 +14,8 @@ Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEo
 - ✅ Signing in via cookies [Episode 4](https://www.youtube.com/watch?v=OWTOw53Zdvc&t=2s)
 - ✅ Multiple bot spawning [Episode 5](https://www.youtube.com/watch?v=OvmgJPvA07A)
 - ✅ Proxy support [Episode 6](https://youtu.be/3-BjLPMf0ak)
-- 🛑 Chat support
+- ✅ Chat support / Basic [Episode 7](https://www.youtube.com/watch?v=JYaGeUCQht8)
+- 🛑 Chat support / Advanced ( Reading sentences from a file, conversation scraper )
 - 🛑 Speech recognition ( So streamer can ask bots questions and they can respond like they are real people )
 - 🛑 Follow support 
 - 🛑 Different ways of entering the stream
