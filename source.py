@@ -10,9 +10,11 @@ config.read("config.ini")
 settings = {}
 settings["streamer"] = config["default"]["streamer"]
 settings["bots"] = config["default"]["bots"]
+settings["proxy_type"] = config["default"]["proxy_type"]
 
 cookies = bot.GetAllCookies()
-proxies = bot.GetProxyList()
+proxies = bot.GetProxyList(settings["proxy_type"])
+
 bot_instances = []
 
 def BotStarter(id,cookie_override):
@@ -32,10 +34,9 @@ def BotStarter(id,cookie_override):
         process = multiprocessing.Process(target=bot.SpawnBot,args=(settings,cookie_override,proxy))
         cookie = cookie_override
     process.start()
-    if cookie != None:
-        bot_instances.append([process,id,cookie])
-    else:
-        bot_instances.append([process,id,None])
+    bot_instances.append([process,id,cookie])
+
+
 
 if __name__ == "__main__":
     for i in range(int(settings["bots"])):
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     while True:
         for i in range(int(settings["bots"])):
             if bot_instances[i][0].is_alive() == False:
-                print("[!] Bot has died...")
+                print("[!] Bot has died...","Restarting with cookie",bot_instances[i][2])
                 bot_instances[i][0].close()
                 if bot_instances[i][2] != None:
                     BotStarter(bot_instances[i][1],bot_instances[i][2])

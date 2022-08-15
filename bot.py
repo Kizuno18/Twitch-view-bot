@@ -1,3 +1,4 @@
+from xml.dom.minidom import Element
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -6,17 +7,64 @@ import pickle
 from os import listdir, getcwd
 from os.path import isfile,join
 import requests
+import random
 
-def BotLogic():
+#//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[5]/div[2]/div[1]/div[2]/div/div/div[1]/div/div/div/div/div[2]
+def RandomEvents(driver):
+    actions = ["chat"]
+    action_selected = actions[random.randint(0,len(actions)-1)]
+
+    if action_selected == "chat":
+        time.sleep(1)
+        element = driver.find_element(By.CLASS_NAME,"chat-input")
+        element.click()
+        cypher = 1
+        while cypher<=10:
+            try:
+                element = driver.find_element(By.XPATH,f"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[{cypher}]/div[2]/div[1]/div[2]/div/div/div[1]/div/div/div/div/div[2]")
+                break
+            except:
+                print("[!] Chatbox cannot be found, bruteforcing...")
+                cypher +=1
+        
+        to_say = "Hello, how is your day?"
+        for letter in to_say:
+            element.send_keys(letter)
+            time.sleep(random.uniform(0,0.5))
+        element.send_keys(Keys.ENTER)
+
+
+def BotLogic(logged_in,driver):
+
+    if logged_in:
+        #try to activate chat
+        try:
+            element = driver.find_element(By.CLASS_NAME,"chat-input")
+            element.click()
+            time.sleep(random.uniform(0,2))
+            element = driver.find_element(By.XPATH,"/html/body/div[5]/div/div/div/div/div/div/div[3]/button")
+            element.click()
+        except:
+            print("[!] No chat rulez...")
+
+
     while True:
+        RandomEvents(driver)
         time.sleep(10)
 
-def GetProxyList(): # Make it so there is an option to read from a file.
-    proxy_list = requests.get("https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=5000&country=all&ssl=all&anonymity=all&simplified=true").content.decode("UTF-8")
-    proxy_list = proxy_list.split("\n")
-    for i in range(len(proxy_list)):
-        proxy_list[i] = proxy_list[i].rstrip()
-    return proxy_list
+def GetProxyList(proxy_type): # Make it so there is an option to read from a file. REMOVE "" FROM PROXY LIST. Selection through config.ini
+    if proxy_type == "dynamic":
+        proxy_list = requests.get("https://proxy.webshare.io/proxy/list/download/ennfuqskpmcpnpjepzjhwknhmpibfqbnfmqibakl/-/http/port/direct/").content.decode("UTF-8")
+        proxy_list = proxy_list.split("\n")
+        for i in range(len(proxy_list)):
+            proxy_list[i] = proxy_list[i].rstrip()
+        proxy_list.remove("")
+    elif proxy_type == "static":
+        with open("tools/proxies.txt","r") as f:
+            proxy_list = f.readlines()
+            for i in range(len(proxy_list)):
+                proxy_list[i] = proxy_list[i].strip()
+    return [""]
 
 def GetAllCookies():
     cookies = [f for f in listdir(getcwd()+"/tools/cookies/") if isfile(join(getcwd()+ "/tools/cookies/",f))]
@@ -62,7 +110,13 @@ def SpawnBot(settings,cookie,proxy):
     
     time.sleep(3)
 
+    try:
+        element = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/div/main/div[1]/div[3]/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[4]/div/div[3]/button")
+        element.click()
+    except:
+        print("[!] Streamer can we watched without aggreeing.")
+
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
 
     
-    BotLogic()
+    BotLogic(logged_in,driver)
