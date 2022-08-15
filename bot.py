@@ -1,4 +1,3 @@
-from xml.dom.minidom import Element
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -9,7 +8,6 @@ from os.path import isfile,join
 import requests
 import random
 
-#//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[5]/div[2]/div[1]/div[2]/div/div/div[1]/div/div/div/div/div[2]
 def RandomEvents(driver):
     actions = ["chat"]
     action_selected = actions[random.randint(0,len(actions)-1)]
@@ -27,7 +25,7 @@ def RandomEvents(driver):
                 print("[!] Chatbox cannot be found, bruteforcing...")
                 cypher +=1
         
-        to_say = "Hello, how is your day?"
+        to_say = "Hello, how is your day?" # make it so you can read stuff from a file here instead
         for letter in to_say:
             element.send_keys(letter)
             time.sleep(random.uniform(0,0.5))
@@ -47,12 +45,13 @@ def BotLogic(logged_in,driver):
         except:
             print("[!] No chat rulez...")
 
-
+    # spawn a thread to listen for @ts and for speech recognition
     while True:
-        RandomEvents(driver)
+        if logged_in:
+            RandomEvents(driver)
         time.sleep(10)
 
-def GetProxyList(proxy_type): # Make it so there is an option to read from a file. REMOVE "" FROM PROXY LIST. Selection through config.ini
+def GetProxyList(proxy_type):
     if proxy_type == "dynamic":
         proxy_list = requests.get("https://proxy.webshare.io/proxy/list/download/ennfuqskpmcpnpjepzjhwknhmpibfqbnfmqibakl/-/http/port/direct/").content.decode("UTF-8")
         proxy_list = proxy_list.split("\n")
@@ -64,7 +63,7 @@ def GetProxyList(proxy_type): # Make it so there is an option to read from a fil
             proxy_list = f.readlines()
             for i in range(len(proxy_list)):
                 proxy_list[i] = proxy_list[i].strip()
-    return [""]
+    return proxy_list#["","","",""]
 
 def GetAllCookies():
     cookies = [f for f in listdir(getcwd()+"/tools/cookies/") if isfile(join(getcwd()+ "/tools/cookies/",f))]
@@ -103,7 +102,7 @@ def SpawnBot(settings,cookie,proxy):
     elements = driver.find_elements(By.TAG_NAME,"a")
 
     for element in elements:
-        if element.text == settings["streamer"]:
+        if element.text.lower() == settings["streamer"].lower():
             element.click()
             break
     
@@ -117,6 +116,6 @@ def SpawnBot(settings,cookie,proxy):
         print("[!] Streamer can we watched without aggreeing.")
 
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-
+    driver.execute_script("window.onblur = function() { window.onfocus() }")
     
     BotLogic(logged_in,driver)

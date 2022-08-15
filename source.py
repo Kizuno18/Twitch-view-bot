@@ -41,6 +41,7 @@ def BotStarter(id,cookie_override):
 if __name__ == "__main__":
     for i in range(int(settings["bots"])):
         BotStarter(i,None)
+        time.sleep(2)
     
     while True:
         for i in range(int(settings["bots"])):
