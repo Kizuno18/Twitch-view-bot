@@ -1,17 +1,10 @@
-import configparser
 import multiprocessing
 import bot
 import time
 import random
+from settings import settings
 
-config = configparser.ConfigParser()
-config.read("config.ini")
-
-settings = {}
-settings["streamer"] = config["default"]["streamer"]
-settings["bots"] = config["default"]["bots"]
-settings["proxy_type"] = config["default"]["proxy_type"]
-
+ 
 cookies = bot.GetAllCookies()
 proxies = bot.GetProxyList(settings["proxy_type"])
 
@@ -25,13 +18,13 @@ def BotStarter(id,cookie_override):
             cookie = cookies[random.randint(0,len(cookies)-1)]
             cookies.remove(cookie)
 
-            process = multiprocessing.Process(target=bot.SpawnBot,args=(settings,cookie,proxy))
+            process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie,proxy))
         else:
-            process = multiprocessing.Process(target=bot.SpawnBot,args=(settings,None,proxy))
+            process = multiprocessing.Process(target=bot.SpawnBot,args=(None,proxy))
             cookie = None
             
     else:
-        process = multiprocessing.Process(target=bot.SpawnBot,args=(settings,cookie_override,proxy))
+        process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie_override,proxy))
         cookie = cookie_override
     process.start()
     bot_instances.append([process,id,cookie])

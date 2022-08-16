@@ -1,0 +1,20 @@
+added import for thereading
+added mention handler function
+added mention handler thread start
+coded mention handler
+added option to enable chatting in config.ini
+added if bots should chat then they chat
+added a new file settings.py and moved the settings to ther
+removed settings pass to bot.py from source.py
+added cookie pass to thread listener
+added responses to mention_respones.txt
+added file reading from mention_respones.txt
+added message sender function and moved send message to there.
+added GetRandomMessages function
+Removed random events function and moved it to bot logic
+added the random messages sending and removing the message so it wont be sent twice.
+added check to see if typing to not overlap...
+changed class on bot chat setup...
+added .lower() for mention checks
+pip install speechrecognition and pyttsx3
+added a function for speech recognition
