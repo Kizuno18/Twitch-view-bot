@@ -34,7 +34,7 @@ def BotStarter(id,cookie_override):
 if __name__ == "__main__":
     for i in range(int(settings["bots"])):
         BotStarter(i,None)
-        time.sleep(2)
+        time.sleep(random.randint(1,10) * int(settings["bot_spawn_rate"]))
     
     while True:
         for i in range(int(settings["bots"])):

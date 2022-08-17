@@ -15,9 +15,36 @@ import soundfile as sf
 from settings import settings
 
 TYPING = False
+
+def GetMentionResponses():
+    responses = {}
+    question = ""
+    with open("tools/chatting/mention_responses.txt","r") as f:
+        raw = f.readlines()
+        for i in range(len(raw)):
+            raw[i] = raw[i].strip()
+            if ":" in raw[i]:
+                question = raw[i].split(':')[1].split(':')[0]
+                responses[question] = []
+                continue
+            responses[question].append(raw[i])
+    return responses
+
+
+
 # To make bots chat just use mentions you already have in the mention_responses.txt
-def MentionAnotherBot(driver):
-    pass
+def MentionAnotherBot(driver,cookie):#Cookie to check to not mention yourself... Also need to find a way of what cookies are used...
+    bots_available = GetAllCookies()
+    bots_available.remove(cookie)
+    bot_to_mention = bots_available[random.randint(0,len(bots_available)-1)].split(".")[0]
+    
+    responses = GetMentionResponses()
+    responses.pop("GENERIC",None) # Remove GENERIC because that does not make sense...
+
+    message_to_send = "@"+bot_to_mention+f" {list(responses.keys())[random.randint(0,len(responses.keys())-1)]}"
+    print("Sending message",message_to_send)
+    MessageSender(driver,message_to_send)
+
 def RefreshAfterFollow(driver): # Needed so we can remove the Follower only chat that is a hinderence to MessageSender function
     driver.refresh()
     
@@ -108,23 +135,25 @@ def MessageSender(driver,message):
     except:
         pass
 
-
-    TYPING = True
-    time.sleep(1)
-    element = driver.find_element(By.CLASS_NAME,"chat-input")
-    element.click()
-    cypher = 1
-    while cypher<=10:
-        try:
-            element = driver.find_element(By.XPATH,f"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[{cypher}]/div[2]/div[1]/div[2]/div/div/div[1]/div/div/div/div/div[2]")
-            break
-        except:
-            cypher +=1
-    for letter in message:
-        element.send_keys(letter)
-        time.sleep(random.uniform(0,0.5))
-    element.send_keys(Keys.ENTER)
-    TYPING = False
+    try:
+        TYPING = True
+        time.sleep(1)
+        element = driver.find_element(By.CLASS_NAME,"chat-input")
+        element.click()
+        cypher = 1
+        while cypher<=10:
+            try:
+                element = driver.find_element(By.XPATH,f"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[{cypher}]/div[2]/div[1]/div[2]/div/div/div[1]/div/div/div/div/div[2]")
+                break
+            except:
+                cypher +=1
+        for letter in message:
+            element.send_keys(letter)
+            time.sleep(random.uniform(0,0.5))
+        element.send_keys(Keys.ENTER)
+        TYPING = False
+    except:
+        print("[!] Message send failed...")
 
 def SpeechRecognitionHandler(driver,cookie):
     recognizer = speech_recognition.Recognizer()
@@ -148,20 +177,8 @@ def SpeechRecognitionHandler(driver,cookie):
 
 
 def MentionHandler(driver,cookie):
-    responses = {}
-    question = ""
-    with open("tools/chatting/mention_responses.txt","r") as f:
-        raw = f.readlines()
-        for i in range(len(raw)):
-            raw[i] = raw[i].strip()
-            if ":" in raw[i]:
-                question = raw[i].split(':')[1].split(':')[0]
-                responses[question] = []
-                continue
-            responses[question].append(raw[i])
+    responses = GetMentionResponses()
     #print(responses)
-    
-
     while True:
         time.sleep(.2)
         try:
@@ -251,9 +268,9 @@ def BotLogic(logged_in,driver,cookie):
         #speech_listener_thread.start()
         #Speech recognition to be made, having trouble recording audio from the computer
 
-    actions = ["chat","follow"] # add mention other bot
+    actions = ["chat","follow","mention_another_bot"] # add mention other bot
     while True:
-        time.sleep(120)#random action min,max
+        time.sleep(random.randint(1,10)* int(settings["bot_event_rate"]))#random action min,max
         if logged_in:
             action_selected = actions[random.randint(0,len(actions)-1)]
             if action_selected == "chat":
@@ -261,7 +278,7 @@ def BotLogic(logged_in,driver,cookie):
                     message_to_send = messages[random.randint(0,len(messages)-1)]
                     messages.remove(message_to_send)
                     if not TYPING:
-                        MessageSender(driver,message_to_send) # CHECK TO SEE IF ALREADY TYPING SOMETHING SO YOU DON'T OVERLAP
+                        MessageSender(driver,message_to_send)
                 else:
                     print("[!] Bot wanted to chat, stopped because bots_should_chat = no")
             if action_selected == "follow":
@@ -269,6 +286,12 @@ def BotLogic(logged_in,driver,cookie):
                     SendFollow(driver)
                 else:
                     print("[!] Bot wanted to follow, stopped because bots_should_follow = no")
+            if action_selected == "mention_another_bot":
+                if settings["bots_chat_amongst"] == "yes":
+                    MentionAnotherBot(driver,cookie)
+                else:
+                    print("[!] Bot wanted to mention another bot, stopped because bots_chat_amongst = no")
+                
         
 
 def GetProxyList(proxy_type):
