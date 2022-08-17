@@ -1,6 +1,3 @@
-from ast import arg
-from email import message
-from email.mime import audio
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -12,14 +9,106 @@ import requests
 import random
 import threading
 import speech_recognition
-import pyttsx3
 import sounddevice as sd
 from scipy.io.wavfile import write
+import soundfile as sf
 from settings import settings
 
 TYPING = False
+# To make bots chat just use mentions you already have in the mention_responses.txt
+def MentionAnotherBot(driver):
+    pass
+def RefreshAfterFollow(driver): # Needed so we can remove the Follower only chat that is a hinderence to MessageSender function
+    driver.refresh()
+    
+    time.sleep(5)
+    
+    try:
+        element = driver.find_element(By.XPATH,"//*[@id='root']/div/div[2]/div/main/div[1]/div[3]/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[6]/div/div[3]/button")
+        element.click()
+    except:
+        print("[!] Streamer can we watched without aggreeing.")
 
+    driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
+    driver.execute_script("window.onblur = function() { window.onfocus() }")
+
+def EnterStream(driver,override = None):#https://www.twitch.tv/directory/following
+
+    if override == None:
+        ways_to_enter = ["search","followed"]
+        way_chosen = ways_to_enter[random.randint(0,len(ways_to_enter)-1)]
+    else:
+        way_chosen = override
+
+    if  way_chosen == "search":
+
+        search_box = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/nav/div/div[2]/div/div/div/div/div[1]/div/div/div/input")
+
+        search_box.send_keys(settings["streamer"])
+        search_box.send_keys(Keys.ENTER)
+
+        time.sleep(2)
+
+        elements = driver.find_elements(By.TAG_NAME,"a")
+
+        for element in elements:
+            if element.text.lower() == settings["streamer"].lower():
+                element.click()
+                break
+
+    elif way_chosen == "followed":
+        driver.get("https://www.twitch.tv/directory/following")
+        time.sleep(5)
+        a_tags = driver.find_elements(By.TAG_NAME,"a")
+        for a_tag in a_tags:
+            p_tags = a_tag.find_elements(By.TAG_NAME,"p")
+            for p_tag in p_tags:
+                if p_tag.text.lower() == settings["streamer"].lower():
+                    try:
+                        element.click()
+                        return
+                    except:
+                        print("[!] Failed entering the stream via followed tab, using search...")
+                        EnterStream(driver,"search")
+        print("[!] Not following streamer, entering via search...")
+        EnterStream(driver,"search")
+
+
+    
+
+def SendFollow(driver):
+    try:
+        element = driver.find_element(By.XPATH,"//*[@id='live-channel-stream-information']/div/div/div[2]/div/div[2]/div[1]/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div/button")
+        if element.get_attribute("aria-label") == "Follow":
+            element.click()
+            time.sleep(1)
+            RefreshAfterFollow(driver)
+        else:
+            print("[!] Already following streamer...")
+            return
+    except:
+        print("[!] Cannot find the follow button...\nTrying alternate button location...")
+        try:
+            element = driver.find_element(By.XPATH,"//*[@id='live-channel-stream-information']/div/div/div/div/div[2]/div[1]/div[2]/div[2]/div[2]/div/div/div/div[1]/div/div/div/div/button")
+            if element.get_attribute("aria-label") == "Follow":
+                element.click()
+                time.sleep(1)
+                RefreshAfterFollow(driver)
+            else:
+                print("[!] Already following streamer...")
+                return    
+        except:
+            pass
 def MessageSender(driver,message):
+
+    try:
+        element = driver.find_element(By.XPATH,"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[5]/div[2]/div[1]/div[1]/div/div/div/div[2]/p")
+        print("[!] Followers only chat, skipping message...")
+        return
+    except:
+        pass
+
+
     TYPING = True
     time.sleep(1)
     element = driver.find_element(By.CLASS_NAME,"chat-input")
@@ -47,13 +136,15 @@ def SpeechRecognitionHandler(driver,cookie):
             sound_sample = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
             sd.wait()  
             write('tools/sound_sample.wav', fs, sound_sample)#Convert file to be speech recognition ready?
-            with speech_recognition.AudioFile("tools/sound_sample.wav") as rec:
+            data, fs = sf.read('tools/sound_sample.wav')
+            sf.write('tools/sound_sample.flac', data, fs)   
+            with speech_recognition.AudioFile("tools/sound_sample.flac") as rec:
                 audio = recognizer.record(rec)
                 recognized = recognizer.recognize_google(audio)
                 recognized = recognized.lower()
                 print("Text recognized:",recognized)
         except Exception as e:
-            print("ERROR",e)
+            print("Nothing can be made out...",e)
 
 
 def MentionHandler(driver,cookie):
@@ -117,6 +208,21 @@ def GetRandomMessages():
 
 
 def BotLogic(logged_in,driver,cookie):
+
+    EnterStream(driver)
+    
+    time.sleep(5)
+    
+    try:
+        element = driver.find_element(By.XPATH,"//*[@id='root']/div/div[2]/div/main/div[1]/div[3]/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[6]/div/div[3]/button")
+        element.click()
+    except:
+        print("[!] Streamer can we watched without aggreeing.")
+
+    driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
+    driver.execute_script("window.onblur = function() { window.onfocus() }")
+
+
     if logged_in:
         #Get all random messages
         messages = GetRandomMessages()
@@ -141,13 +247,13 @@ def BotLogic(logged_in,driver,cookie):
         mention_listener_thread = threading.Thread(target=MentionHandler,args=(driver,cookie))
         mention_listener_thread.start()
 
-        speech_listener_thread = threading.Thread(target=SpeechRecognitionHandler,args=(driver,cookie))
-        speech_listener_thread.start()
+        #speech_listener_thread = threading.Thread(target=SpeechRecognitionHandler,args=(driver,cookie))
+        #speech_listener_thread.start()
+        #Speech recognition to be made, having trouble recording audio from the computer
 
-    actions = ["chat"]
-
+    actions = ["chat","follow"] # add mention other bot
     while True:
-        time.sleep(60)
+        time.sleep(120)#random action min,max
         if logged_in:
             action_selected = actions[random.randint(0,len(actions)-1)]
             if action_selected == "chat":
@@ -156,6 +262,13 @@ def BotLogic(logged_in,driver,cookie):
                     messages.remove(message_to_send)
                     if not TYPING:
                         MessageSender(driver,message_to_send) # CHECK TO SEE IF ALREADY TYPING SOMETHING SO YOU DON'T OVERLAP
+                else:
+                    print("[!] Bot wanted to chat, stopped because bots_should_chat = no")
+            if action_selected == "follow":
+                if settings["bots_should_follow"] == "yes":
+                    SendFollow(driver)
+                else:
+                    print("[!] Bot wanted to follow, stopped because bots_should_follow = no")
         
 
 def GetProxyList(proxy_type):
@@ -197,32 +310,5 @@ def SpawnBot(cookie,proxy):
         time.sleep(1)
         driver.refresh()
         logged_in = True
-
-
-    search_box = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/nav/div/div[2]/div/div/div/div/div[1]/div/div/div/input")
-
-    search_box.send_keys(settings["streamer"])
-    search_box.send_keys(Keys.ENTER)
-
-    time.sleep(2)
-
-    elements = driver.find_elements(By.TAG_NAME,"a")
-
-    for element in elements:
-        if element.text.lower() == settings["streamer"].lower():
-            element.click()
-            break
-    
-    
-    time.sleep(3)
-
-    try:
-        element = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/div/main/div[1]/div[3]/div/div/div[2]/div/div[2]/div/div[2]/div/div/div[4]/div/div[3]/button")
-        element.click()
-    except:
-        print("[!] Streamer can we watched without aggreeing.")
-
-    driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-    driver.execute_script("window.onblur = function() { window.onfocus() }")
     
     BotLogic(logged_in,driver,cookie)
