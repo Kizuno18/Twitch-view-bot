@@ -299,7 +299,7 @@ def GetProxyList(proxy_type):
             proxy_list = f.readlines()
             for i in range(len(proxy_list)):
                 proxy_list[i] = proxy_list[i].strip()
-    return ["","","",""] #proxy_list 
+    return proxy_list 
 
 def GetAllCookies():
     cookies = [f for f in listdir(getcwd()+"/tools/cookies/") if isfile(join(getcwd()+ "/tools/cookies/",f))]
