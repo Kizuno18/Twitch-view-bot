@@ -14,8 +14,6 @@ from scipy.io.wavfile import write
 import soundfile as sf
 from settings import settings
 
-TYPING = False
-
 def GetMentionResponses():
     responses = {}
     question = ""
@@ -136,7 +134,6 @@ def MessageSender(driver,message):
         pass
 
     try:
-        TYPING = True
         time.sleep(1)
         element = driver.find_element(By.CLASS_NAME,"chat-input")
         element.click()
@@ -151,7 +148,6 @@ def MessageSender(driver,message):
             element.send_keys(letter)
             time.sleep(random.uniform(0,0.5))
         element.send_keys(Keys.ENTER)
-        TYPING = False
     except:
         print("[!] Message send failed...")
 
@@ -209,12 +205,10 @@ def MentionHandler(driver,cookie):
                 print("[!] Mention detected:",mention,"-",message)
                 if message in responses:
                     #print("[!] Response needed...")
-                    if not TYPING:
-                        MessageSender(driver,responses[message][random.randint(0,len(responses[message])-1)])
+                    MessageSender(driver,responses[message][random.randint(0,len(responses[message])-1)])
                 else:
                     #print("[!] Generic response needed")
-                    if not TYPING:
-                        MessageSender(driver,responses["GENERIC"][random.randint(0,len(responses["GENERIC"])-1)])
+                    MessageSender(driver,responses["GENERIC"][random.randint(0,len(responses["GENERIC"])-1)])
                 
 def GetRandomMessages():
     with open("tools/chatting/messages_to_send.txt") as f:
@@ -277,8 +271,7 @@ def BotLogic(logged_in,driver,cookie):
                 if settings["bots_should_chat"] == "yes":
                     message_to_send = messages[random.randint(0,len(messages)-1)]
                     messages.remove(message_to_send)
-                    if not TYPING:
-                        MessageSender(driver,message_to_send)
+                    MessageSender(driver,message_to_send)
                 else:
                     print("[!] Bot wanted to chat, stopped because bots_should_chat = no")
             if action_selected == "follow":
