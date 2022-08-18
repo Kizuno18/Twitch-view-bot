@@ -55,7 +55,7 @@ def RefreshAfterFollow(driver): # Needed so we can remove the Follower only chat
         print("[!] Streamer can we watched without aggreeing.")
 
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-    driver.execute_script("window.onblur = function() { window.onfocus() }")
+    driver.execute_script("window.onblur = function() { window.onfocus(); }")
 
 def EnterStream(driver,override = None):#https://www.twitch.tv/directory/following
 
@@ -231,7 +231,7 @@ def BotLogic(logged_in,driver,cookie):
         print("[!] Streamer can we watched without aggreeing.")
 
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-    driver.execute_script("window.onblur = function() { window.onfocus() }")
+    driver.execute_script("window.onblur = function() { window.onfocus(); }")
 
 
     if logged_in:
