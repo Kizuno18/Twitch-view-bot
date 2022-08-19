@@ -15,8 +15,7 @@
  - ✅ Proxy support [Episode 6](https://youtu.be/3-BjLPMf0ak)
  - ✅ Chat support / Basic [Episode 7](https://www.youtube.com/watch?v=JYaGeUCQht8)
  - ✅ Chat support / Advanced ( Reading sentences from a file, conversation scraper ) [Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
- - 🛑 Speech recognition 
- ( So streamer can ask bots questions and they can respond like they are real people )[Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
+ - ✅ Speech recognition
  - ✅ Follow support [Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
  - ✅ Different ways of entering the stream[Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
 
