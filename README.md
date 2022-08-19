@@ -3,6 +3,8 @@
  
  Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
  
+ Support me on patreon for more cool bots and projects [Pateron](https://www.patreon.com/coeex)
+ 
  ## Future plans for the bot:
 
  - ✅ Spawn a browser [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
