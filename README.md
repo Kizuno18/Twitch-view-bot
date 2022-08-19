@@ -22,8 +22,8 @@
 
 ## How to get the bot up and running:
 
-- Install dependencies first </br>
-**MacOS/Linux:** ```pip3 install -r requirements.txt``` ( You have to be in the folder of the bot )</br>
+- Install dependencies first ( You have to be in the folder of the bot ) </br>
+**MacOS/Linux:** ```pip3 install -r requirements.txt``` </br>
 **Windows:** ```pip install -r requirements.txt```
 - Start up cookie monster that is in /tools/cookie_monster.py
 - Log in into some accounts and get the cookies
