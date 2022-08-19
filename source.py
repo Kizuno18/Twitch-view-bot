@@ -11,8 +11,12 @@ proxies = bot.GetProxyList(settings["proxy_type"])
 bot_instances = []
 
 def BotStarter(id,cookie_override):
-    proxy = proxies[random.randint(0,len(proxies)-1)]
-    proxies.remove(proxy)
+    if len(proxies) > 0:
+        proxy = proxies[random.randint(0,len(proxies)-1)]
+        proxies.remove(proxy)
+    else:
+        print("[!][!][!] You are out of proxies, bots from now on will start without a proxy...")
+        proxy = ""
     if cookie_override == None:
         if len(cookies) > 0:
             cookie = cookies[random.randint(0,len(cookies)-1)]

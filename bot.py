@@ -55,31 +55,29 @@ def RefreshAfterFollow(driver): # Needed so we can remove the Follower only chat
         print("[!] Streamer can we watched without aggreeing.")
 
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-    driver.execute_script("window.onblur = function() { window.onfocus(); }")
+    driver.execute_script("window.onblur = function() { window.onfocus() }")
 
-def EnterStream(driver,override = None):#https://www.twitch.tv/directory/following
+def EnterStream(driver,override = None):
 
     if override == None:
-        ways_to_enter = ["search","followed"]
+        ways_to_enter = ["search","followed","direct"]
         way_chosen = ways_to_enter[random.randint(0,len(ways_to_enter)-1)]
     else:
         way_chosen = override
 
     if  way_chosen == "search":
-
-        search_box = driver.find_element(By.XPATH,"/html/body/div[1]/div/div[2]/nav/div/div[2]/div/div/div/div/div[1]/div/div/div/input")
-
-        search_box.send_keys(settings["streamer"])
-        search_box.send_keys(Keys.ENTER)
-
+        driver.get("https://www.twitch.tv/search?term=%s" % settings["streamer"])
         time.sleep(2)
+        try:
+            elements = driver.find_elements(By.TAG_NAME,"a")
 
-        elements = driver.find_elements(By.TAG_NAME,"a")
-
-        for element in elements:
-            if element.text.lower() == settings["streamer"].lower():
-                element.click()
-                break
+            for element in elements:
+                if element.text.lower() == settings["streamer"].lower():
+                    element.click()
+                    break
+        except:
+            print("[!] Failed to search for the streamer, going direct...")
+            EnterStream(driver,"direct")
 
     elif way_chosen == "followed":
         driver.get("https://www.twitch.tv/directory/following")
@@ -97,6 +95,8 @@ def EnterStream(driver,override = None):#https://www.twitch.tv/directory/followi
                         EnterStream(driver,"search")
         print("[!] Not following streamer, entering via search...")
         EnterStream(driver,"search")
+    elif way_chosen == "direct":
+        driver.get("https://www.twitch.tv/%s" % settings["streamer"])
 
 
     
@@ -149,28 +149,31 @@ def MessageSender(driver,message):
             time.sleep(random.uniform(0,0.5))
         element.send_keys(Keys.ENTER)
     except:
-        print("[!] Message send failed...")
+        print("[!] Message send failed, retrying in 10 seconds...")
+        time.sleep(10)
+        MessageSender(driver,message)
 
 def SpeechRecognitionHandler(driver,cookie):
     recognizer = speech_recognition.Recognizer()
-
+    responses = GetMentionResponses()
     while True:
         try:
             fs = 44100  
-            seconds = 3 
+            seconds = 5
             sound_sample = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
             sd.wait()  
-            write('tools/sound_sample.wav', fs, sound_sample)#Convert file to be speech recognition ready?
+            write('tools/sound_sample.wav', fs, sound_sample)
             data, fs = sf.read('tools/sound_sample.wav')
             sf.write('tools/sound_sample.flac', data, fs)   
             with speech_recognition.AudioFile("tools/sound_sample.flac") as rec:
                 audio = recognizer.record(rec)
                 recognized = recognizer.recognize_google(audio)
                 recognized = recognized.lower()
-                print("Text recognized:",recognized)
+                #print("Text recognized:",recognized)
+                if recognized in responses:
+                    MessageSender(driver,responses[recognized][random.randint(0,len(responses[recognized])-1)])
         except Exception as e:
-            print("Nothing can be made out...",e)
-
+            pass # If we don't know what is being said or we can't decode just skip
 
 def MentionHandler(driver,cookie):
     responses = GetMentionResponses()
@@ -231,7 +234,7 @@ def BotLogic(logged_in,driver,cookie):
         print("[!] Streamer can we watched without aggreeing.")
 
     driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
-    driver.execute_script("window.onblur = function() { window.onfocus(); }")
+    driver.execute_script("window.onblur = function() { window.onfocus() }")
 
 
     if logged_in:
@@ -239,7 +242,7 @@ def BotLogic(logged_in,driver,cookie):
         messages = GetRandomMessages()
         #try to activate chat
 
-        element = driver.find_element(By.CLASS_NAME,"chat-wysiwyg-input__editor") #wtf
+        element = driver.find_element(By.CLASS_NAME,"chat-wysiwyg-input__editor") 
         element.click()
 
         time.sleep(random.uniform(.5,2))
@@ -255,22 +258,23 @@ def BotLogic(logged_in,driver,cookie):
 
     # spawn a thread to listen for @ts and for speech recognition
     if logged_in:
-        mention_listener_thread = threading.Thread(target=MentionHandler,args=(driver,cookie))
-        mention_listener_thread.start()
+        if settings["bots_mention_recognition"] == "yes":
+            mention_listener_thread = threading.Thread(target=MentionHandler,args=(driver,cookie))
+            mention_listener_thread.start()
 
-        #speech_listener_thread = threading.Thread(target=SpeechRecognitionHandler,args=(driver,cookie))
-        #speech_listener_thread.start()
-        #Speech recognition to be made, having trouble recording audio from the computer
+        if settings["speech_recognition"] == "yes":
+            speech_listener_thread = threading.Thread(target=SpeechRecognitionHandler,args=(driver,cookie))
+            speech_listener_thread.start()
 
-    actions = ["chat","follow","mention_another_bot"] # add mention other bot
+    actions = ["chat","follow","mention_another_bot"]
     while True:
-        time.sleep(random.randint(1,10)* int(settings["bot_event_rate"]))#random action min,max
+        time.sleep(random.randint(1,10)* int(settings["bot_event_rate"]))
         if logged_in:
             action_selected = actions[random.randint(0,len(actions)-1)]
             if action_selected == "chat":
                 if settings["bots_should_chat"] == "yes":
                     message_to_send = messages[random.randint(0,len(messages)-1)]
-                    messages.remove(message_to_send)
+                    messages.remove(message_to_send)#This is to ensure that the bot does not send the same message twice...
                     MessageSender(driver,message_to_send)
                 else:
                     print("[!] Bot wanted to chat, stopped because bots_should_chat = no")
