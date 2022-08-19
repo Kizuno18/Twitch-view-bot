@@ -1,10 +1,8 @@
 # Twitch View Bot 
  Here you can find all the files to the bot.
  
- Before running it CD into the folder and: pip3 install -r requirements.txt
-
  Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
-
+ 
  ## Future plans for the bot:
 
  - ✅ Spawn a browser [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
@@ -21,6 +19,16 @@
  ( So streamer can ask bots questions and they can respond like they are real people )[Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
  - ✅ Follow support [Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
  - ✅ Different ways of entering the stream[Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
+
+## How to get the bot up and running:
+
+- Install dependencies first </br>
+**MacOS/Linux:** ```pip3 install -r requirements.txt``` ( You have to be in the folder of the bot )</br>
+**Windows:** ```pip install -r requirements.txt```
+- Start up cookie monster that is in /tools/cookie_monster.py
+- Log in into some accounts and get the cookies
+- Configure config.ini to your liking
+- Start the bot and laugh maniacally
 
  ## Disclamier
 
