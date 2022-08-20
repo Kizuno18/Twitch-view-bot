@@ -1,9 +1,14 @@
-# Twitch View Bot 
- Here you can find all the files to the bot.
- 
- Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
- 
- Support me on patreon for more cool bots and projects [Pateron](https://www.patreon.com/coeex)
+# Yaboi 🤙🏻
+Yaboi is a **one of a kind** Twitch view bot. </br>
+
+It supports **_speech recognition_**, **_mention recognition_**, follwing, commenting and **_advanced logging in via cookies_**.
+
+It was created as an experiment and a YouTube series. 
+
+## Plugs
+Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
+
+Support me on patreon for more cool bots and projects [Pateron](https://www.patreon.com/coeex)
  
  ## Future plans for the bot:
 
