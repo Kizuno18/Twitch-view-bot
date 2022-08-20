@@ -1,4 +1,10 @@
 # Yaboi 🤙🏻
+
+<p align="center">
+ <img width=250px src="https://s4.gifyu.com/images/Untitled-designd02054fc0937a496.gif">
+</p>
+
+
 Yaboi is a **one of a kind** Twitch view bot. </br>
 
 It supports **_speech recognition_**, **_mention recognition_**, follwing, commenting and **_advanced logging in via cookies_**.
