@@ -308,7 +308,7 @@ def BotLogic(logged_in,driver,cookie):
 
 def GetProxyList(proxy_type):
     if proxy_type == "dynamic":
-        proxy_list = requests.get("https://proxy.webshare.io/proxy/list/download/ennfuqskpmcpnpjepzjhwknhmpibfqbnfmqibakl/-/http/port/direct/").content.decode("UTF-8")
+        proxy_list = requests.get("PROXY DOWNLOAD LINK GOES HERE").content.decode("UTF-8")
         proxy_list = proxy_list.split("\n")
         for i in range(len(proxy_list)):
             proxy_list[i] = proxy_list[i].rstrip()
