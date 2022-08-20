@@ -36,6 +36,13 @@ def BotStarter(id,cookie_override):
 
 
 if __name__ == "__main__":
+
+
+    #clean bots_active file
+
+    with open("tools/chatting/active_bots.txt","w") as f:
+        f.write("")
+
     for i in range(int(settings["bots"])):
         BotStarter(i,None)
         time.sleep(random.randint(1,10) * int(settings["bot_spawn_rate"]))
