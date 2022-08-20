@@ -28,6 +28,8 @@ Support me on patreon for more cool bots and projects [Pateron](https://www.patr
 
 ## How to get the bot up and running:
 
+[Official YouTube tutorial](https://youtu.be/o87U8asusyo)
+
 - Install dependencies first ( You have to be in the folder of the bot ) </br>
 **MacOS/Linux:** ```pip3 install -r requirements.txt``` </br>
 **Windows:** ```pip install -r requirements.txt```
