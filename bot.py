@@ -326,9 +326,10 @@ def GetAllCookies():
 
 
 
-def SpawnBot(cookie,proxy):
+def SpawnBot(cookie,proxy,should_mute):
     chrome_options = uc.ChromeOptions()
-    chrome_options.add_argument("--mute-audio")
+    if should_mute:
+        chrome_options.add_argument("--mute-audio")
     chrome_options.add_argument(f"--proxy-server={proxy}")
     driver = uc.Chrome(options=chrome_options)
     driver.get("https://www.twitch.tv/")

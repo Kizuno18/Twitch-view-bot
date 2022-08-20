@@ -7,6 +7,7 @@ from settings import settings
  
 cookies = bot.GetAllCookies()
 proxies = bot.GetProxyList(settings["proxy_type"])
+should_mute = True
 
 bot_instances = []
 
@@ -22,13 +23,13 @@ def BotStarter(id,cookie_override):
             cookie = cookies[random.randint(0,len(cookies)-1)]
             cookies.remove(cookie)
 
-            process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie,proxy))
+            process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie,proxy,should_mute))
         else:
-            process = multiprocessing.Process(target=bot.SpawnBot,args=(None,proxy))
+            process = multiprocessing.Process(target=bot.SpawnBot,args=(None,proxy,should_mute))
             cookie = None
             
     else:
-        process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie_override,proxy))
+        process = multiprocessing.Process(target=bot.SpawnBot,args=(cookie_override,proxy,should_mute))
         cookie = cookie_override
     process.start()
     bot_instances.append([process,id,cookie])
@@ -43,9 +44,12 @@ if __name__ == "__main__":
     with open("tools/chatting/active_bots.txt","w") as f:
         f.write("")
 
+    if settings["speech_recognition"] == "yes":
+        should_mute = False
     for i in range(int(settings["bots"])):
         BotStarter(i,None)
         time.sleep(random.randint(1,10) * int(settings["bot_spawn_rate"]))
+        should_mute = True
     
     while True:
         for i in range(int(settings["bots"])):
