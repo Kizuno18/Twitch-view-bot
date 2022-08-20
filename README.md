@@ -10,7 +10,7 @@ Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEo
 
 Support me on patreon for more cool bots and projects [Pateron](https://www.patreon.com/coeex)
  
- ## Future plans for the bot:
+ ## Bot features
 
  - ✅ Spawn a browser [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
  - ✅ Go to Twitch.tv [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
