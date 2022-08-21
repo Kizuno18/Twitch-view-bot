@@ -18,7 +18,6 @@ Support me on patreon for more cool bots and projects [Pateron](https://www.patr
  
  ## Bot features
 
- - ✅ Block video and audio 
  - ✅ Signing in via cookies
  - ✅ Proxy support 
  - ✅ Chat support
