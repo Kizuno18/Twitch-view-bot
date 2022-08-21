@@ -244,7 +244,7 @@ def BotLogic(logged_in,driver,cookie):
         element.click()
     except:
         print("[!] Streamer can we watched without aggreeing.")
-    driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
+    #driver.execute_script("document.getElementsByClassName('persistent-player')[0].style='';")
     driver.execute_script("window.onblur = function() { window.onfocus(); }")
 
 
