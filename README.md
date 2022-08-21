@@ -9,7 +9,7 @@ Yaboi is a **one of a kind** Twitch view bot. </br>
 
 It supports **_speech recognition_**, **_mention recognition_**, follwing, commenting and **_advanced logging in via cookies_**.
 
-It was created as an experiment and a YouTube series. 
+It was created as an experiment for a YouTube series. 
 
 ## Plugs
 Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
@@ -18,19 +18,15 @@ Support me on patreon for more cool bots and projects [Pateron](https://www.patr
  
  ## Bot features
 
- - ✅ Spawn a browser [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
- - ✅ Go to Twitch.tv [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
- - ✅ Search for the streamer [Episode 1](https://www.youtube.com/watch?v=QhDiEoX_JM0)
- - ✅ Enter the stream [Episode 2](https://www.youtube.com/watch?v=5atizgvQO90&t=1s)
- - ✅ Block video and audio ( for performance ) [Episode 3](https://www.youtube.com/watch?v=ybNFTqF1QKY&t=13s)
- - ✅ Signing in via cookies [Episode 4](https://www.youtube.com/watch?v=OWTOw53Zdvc&t=2s)
- - ✅ Multiple bot spawning [Episode 5](https://www.youtube.com/watch?v=OvmgJPvA07A)
- - ✅ Proxy support [Episode 6](https://youtu.be/3-BjLPMf0ak)
- - ✅ Chat support / Basic [Episode 7](https://www.youtube.com/watch?v=JYaGeUCQht8)
- - ✅ Chat support / Advanced ( Reading sentences from a file, conversation scraper ) [Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
+ - ✅ Block video and audio 
+ - ✅ Signing in via cookies
+ - ✅ Proxy support 
+ - ✅ Chat support
+ - ✅ Mention recognition
  - ✅ Speech recognition
- - ✅ Follow support [Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
- - ✅ Different ways of entering the stream[Final episode](https://www.youtube.com/watch?v=nDEvSicyt54)
+ - ✅ Bots chat amongst themselves
+ - ✅ Follow bot
+ - ✅ Different ways of entering the stream
 
 ## How to get the bot up and running:
 
@@ -43,6 +39,26 @@ Support me on patreon for more cool bots and projects [Pateron](https://www.patr
 - Log in into some accounts and get the cookies
 - Configure config.ini to your liking
 - Start the bot and laugh maniacally
+
+## Speech recognition
+
+The bot offers **_speech recognition_** that aims to make the bots appear like real people.
+
+### How does it work?
+
+There is a file in tools/chatting called ```speech_recognition_responses.txt```
+
+In that file you will see some examples I left, to make full use of the bot place certain sentences you will be saying in your livestream to make the bots respond. 
+
+For example if you say " Would you like me to play wow or lol " you should add the following to the ```speech_recognition_responses.txt```
+
+```
+:wow or lol:
+I really like wow
+Idc any game really
+lol is better in my opinion
+```
+And so on, you get the gist. This way you can phrase the sentence however you like but the bots will know the question is wow or lol.
 
  ## Disclamier
 
