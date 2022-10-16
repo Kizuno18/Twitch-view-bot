@@ -138,7 +138,7 @@ def SendFollow(driver):
 def MessageSender(driver,message):
 
     try:
-        element = driver.find_element(By.XPATH,"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[5]/div[2]/div[1]/div[1]/div/div/div/div[2]/p") or driver.find_element(By.XPATH,"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[6]/div[2]/div[1]/div[1]/div/div[2]/div/p")
+        element = driver.find_element(By.XPATH,"//*[@id='live-page-chat']/div/div/div/div/div/section/div/div[6]/div[2]/div[1]/div[1]/div/div[2]/div/p")
         print("[!] Followers only chat, skipping message...")
         return
     except:
