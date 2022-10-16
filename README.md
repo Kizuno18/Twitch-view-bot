@@ -9,12 +9,8 @@ Yaboi is a **one of a kind** Twitch view bot. </br>
 
 It supports **_speech recognition_**, **_mention recognition_**, follwing, commenting and **_advanced logging in via cookies_**.
 
-It was created as an experiment for a YouTube series. 
+It was created as an experiment and for learning. 
 
-## Plugs
-Be sure to check out the [Youtube series](https://www.youtube.com/watch?v=QhDiEoX_JM0&list=PLQXIlO6M6IM2JQpQlNURzLlB2jQCJVJmc) in order to fully understand this bot.
-
-Support me on patreon for more cool bots and projects [Pateron](https://www.patreon.com/coeex)
  
  ## Bot features
 
@@ -28,8 +24,6 @@ Support me on patreon for more cool bots and projects [Pateron](https://www.patr
  - ✅ Different ways of entering the stream
 
 ## How to get the bot up and running:
-
-[Official YouTube tutorial](https://youtu.be/o87U8asusyo)
 
 - Install dependencies first ( You have to be in the folder of the bot ) </br>
 **MacOS/Linux:** ```pip3 install -r requirements.txt``` </br>
@@ -61,6 +55,6 @@ And so on, you get the gist. This way you can phrase the sentence however you li
 
  ## Disclamier
 
- The bot I am making for the YouTube series is for educational purposes only. If anybody wishes to use this bot in order to boost their ranking on Twitch I am not responsible for that nor do I suggest doing that in the first place. 
+ The bot I am making for educational purposes only. If anybody wishes to use this bot in order to boost their ranking on Twitch I am not responsible for that nor do I suggest doing that in the first place.
 
  Thank you for understanding.
