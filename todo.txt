@@ -1,0 +1,2 @@
+add headless mode
+add a check to channel rules on first chat interaction
