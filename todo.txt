@@ -1,2 +1,4 @@
 add headless mode
 add a check to channel rules on first chat interaction
+
+improvements to more low cpu & memory usage
